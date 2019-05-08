@@ -20,7 +20,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(1920, 1080, "Space War: Arena", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(1920, 1080, "Space War: Arena", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -72,9 +72,10 @@ int main(void)
 
 			background.PrintBC(shader, proj, view, ib, renderer);
 			map.PrintMP(shader, proj, view, ib, renderer);
+			map.ColisionMap();
 			player1.PrintBC(shader, proj, view, ib, renderer);
 
-			player1.MCheck(KeyCheck(*window));
+			player1.MCheck(KeyCheck(*window), map);
 			
 			glfwSwapBuffers(window);
 			glfwPollEvents();

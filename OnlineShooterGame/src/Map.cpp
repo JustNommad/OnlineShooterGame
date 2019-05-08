@@ -2,6 +2,7 @@
 
 Map::Map()
 {
+	ColisionMap();
 	VertexBuffer vb1(positionsRL, 4 * 4 * sizeof(float));
 	VertexBuffer vb2(positionsM1, 4 * 4 * sizeof(float));
 	VertexBuffer vb3(positionsM2, 4 * 4 * sizeof(float));
@@ -71,19 +72,19 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 	glm::vec3 translationR(1920, 0, 0);
 	glm::vec3 translationL(0, 0, 0);
 	glm::vec3 translation1(0, 0, 0);
-	glm::vec3 translation2(300, 280, 0);
-	glm::vec3 translation3(230, 590, 0);
-	glm::vec3 translation4(600, 450, 0);
-	glm::vec3 translation5(1017, 713, 0);
-	glm::vec3 translation6(1550, 970, 0);
-	glm::vec3 translation7(1550, 280, 0);
-	glm::vec3 translation8(1750, 590, 0);
-	glm::vec3 translation9(1200, 440, 0);
-	glm::vec3 translation10(50, 750, 0);
-	glm::vec3 translation11(370, 910, 0);
-	glm::vec3 translation12(980, 483, 0);
-	glm::vec3 translation13(630, 685, 0);
-	glm::vec3 translation14(1000, 200, 0);
+	glm::vec3 translation2(240, 260, 0);
+	glm::vec3 translation3(240, 620, 0);
+	glm::vec3 translation4(480, 420, 0);
+	glm::vec3 translation5(840, 620, 0);
+	glm::vec3 translation6(1560, 860, 0);
+	glm::vec3 translation7(1560, 260, 0);
+	glm::vec3 translation8(1680, 500, 0);
+	glm::vec3 translation9(1080, 380, 0);
+	glm::vec3 translation10(0, 740, 0);
+	glm::vec3 translation11(360, 860, 0);
+	glm::vec3 translation12(840, 460, 0);
+	//glm::vec3 translation13(600, 600, 0);
+	glm::vec3 translation14(960, 140, 0);
 
 	Texture::Bind(texture_1);
 	{
@@ -101,12 +102,28 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		renderer.Draw(va2, index, shader);
 	}
 
+	Texture::Bind(texture_5);
+	{
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation14);
+		glm::mat4 mvp = proj * view * model;
+		shader.SetUniformMat4f("u_MVP", mvp);
+		renderer.Draw(va5, index, shader);
+	}
+
 	Texture::Bind(texture_3);
 	{
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation1);
 		glm::mat4 mvp = proj * view * model;
 		shader.SetUniformMat4f("u_MVP", mvp);
 		renderer.Draw(va3, index, shader);
+	}
+
+	Texture::Bind(texture_7);
+	{
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation12);
+		glm::mat4 mvp = proj * view * model;
+		shader.SetUniformMat4f("u_MVP", mvp);
+		renderer.Draw(va7, index, shader);
 	}
 
 	Texture::Bind(texture_4);
@@ -142,13 +159,6 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		renderer.Draw(va4, index, shader);
 	}
 
-	Texture::Bind(texture_7);
-	{
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation12);
-		glm::mat4 mvp = proj * view * model;
-		shader.SetUniformMat4f("u_MVP", mvp);
-		renderer.Draw(va7, index, shader);
-	}
 	Texture::Bind(texture_4);
 	{
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation5);
@@ -176,18 +186,6 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		shader.SetUniformMat4f("u_MVP", mvp);
 		renderer.Draw(va5, index, shader);
 	}
-	{
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation13);
-		glm::mat4 mvp = proj * view * model;
-		shader.SetUniformMat4f("u_MVP", mvp);
-		renderer.Draw(va5, index, shader);
-	}
-	{
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation14);
-		glm::mat4 mvp = proj * view * model;
-		shader.SetUniformMat4f("u_MVP", mvp);
-		renderer.Draw(va5, index, shader);
-	}
 	Texture::Bind(texture_6);
 	{
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), translation11);
@@ -195,4 +193,27 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		shader.SetUniformMat4f("u_MVP", mvp);
 		renderer.Draw(va6, index, shader);
 	}
+}
+
+void Map::ColisionMap()
+{
+	system("cls");
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			std::cout << ColisMap[i][j];
+		}
+		std::cout << std::endl;
+	}
+}
+
+void Map::SetColPoint(int x, int y, int point)
+{
+	ColisMap[y][x] = point;
+}
+
+int Map::GetColPoint(int x, int y)
+{
+	return ColisMap[y][x];
 }

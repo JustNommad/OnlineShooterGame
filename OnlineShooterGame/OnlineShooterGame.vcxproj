@@ -83,7 +83,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Release\Win32; $(SolutionDir)Dependencies\DevIL\lib\x86\Release</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib; opengl32.lib; user32.lib;gdi32.lib;shell32.lib;glew32s.lib; DevIL.lib; ILU.lib; ILUT.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib; opengl32.lib; user32.lib;gdi32.lib;shell32.lib;glew32s.lib;</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>

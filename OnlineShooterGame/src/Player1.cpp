@@ -1,9 +1,12 @@
 #include "Player1.h"
 
+
 Player1::Player1()
 {
 	dx_ = 120;
-	dy_ = 145;
+	dy_ = 140;
+	x_ = 1;
+	y_ = 7;
 	VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 	VertexBufferLayout layout;
 
@@ -34,28 +37,69 @@ void Player1::PrintBC(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffe
 	}
 }
 
-void Player1::MCheck(int key)
+void Player1::MCheck(int key, Map& map)
 {
+	map.SetColPoint(x_, y_, 2);
+	int check = map.GetColPoint(x_, y_ + 1);
+	if (check != 1)
+	{
+		y_ = y_ + 1;
+		dy_ = dy_ - 120;
+		map.SetColPoint(x_, y_ - 1, 0);
+		Sleep(50);
+	}
+	if (check == 1)
+	{
+		checkPush = 0;
+	}
 	switch (key)
 	{
-	case 1:
+	/*case 1:
 	{
 		dy_ = dy_ - 7;
 		break;
-	}
+	}*/
 	case 3:
 	{
-		dy_ = dy_ + 7;
+		if (checkPush == 0)
+		{
+			for (int i = 1; i <= 2; i++)
+			{
+				Sleep(50);
+				int check = map.GetColPoint(x_, y_ - 1);
+				if (check != 1)
+				{
+					y_ = y_ - 1;
+					dy_ = dy_ + 120;
+					map.SetColPoint(x_, y_ + 1, 0);
+					checkPush = 1;
+				}
+			}
+		}
 		break;
 	}
 	case 2:
 	{
-		dx_ = dx_ - 7;
+		int check = map.GetColPoint(x_ - 1, y_);
+		if (check != 1)
+		{
+			x_ = x_ - 1;
+			dx_ = dx_ - 120;
+			map.SetColPoint(x_ + 1, y_, 0);
+			Sleep(50);
+		}
 		break;
 	}
 	case 4:
 	{
-		dx_ = dx_ + 7;
+		int check = map.GetColPoint(x_ + 1, y_);
+		if (check != 1)
+		{
+			x_ = x_ + 1;
+			dx_ = dx_ + 120;
+			map.SetColPoint(x_ - 1, y_, 0);
+			Sleep(50);
+		}
 		break;
 	}
 	}

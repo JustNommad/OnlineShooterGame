@@ -5,6 +5,8 @@
 #include "SourceFiles/Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <windows.h>
+#include "Map.h"
 
 #include <GLFW/glfw3.h>
 
@@ -23,10 +25,12 @@ private:
 	GLuint texture_;
 	VertexArray vabc;
 	int dx_, dy_;
+	int x_, y_;
+	int checkPush = 0;
 public:
 	Player1();
 	~Player1();
 
-	void MCheck(int key);
+	void MCheck(int key, Map& map);
 	void PrintBC(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer);
 };
