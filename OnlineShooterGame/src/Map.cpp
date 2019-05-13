@@ -198,9 +198,9 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 void Map::ColisionMap()
 {
 	system("cls");
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 13; i++)
 	{
-		for (int j = 0; j < 16; j++)
+		for (int j = 0; j < 17; j++)
 		{
 			std::cout << ColisMap[i][j];
 		}

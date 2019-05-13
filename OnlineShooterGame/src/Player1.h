@@ -26,11 +26,15 @@ private:
 	VertexArray vabc;
 	int dx_, dy_;
 	int x_, y_;
-	int checkPush = 0;
+	bool UP_c = false, DOWN_c = false, LEFT_c = false, RIGHT_c = false;
+	int AnimCount = 0;
+	int checkPush = 0, drop_mode = 0;
+	int Up_count = 0, Down_count = 0, Right_count = 0, Left_count = 0;
 public:
 	Player1();
 	~Player1();
 
-	void MCheck(int key, Map& map);
+	void MCheck(Map& map, GLFWwindow& window);
 	void PrintBC(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer);
+
 };

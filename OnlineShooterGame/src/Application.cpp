@@ -8,8 +8,6 @@
 
 GLFWwindow* window;
 
-int KeyCheck(GLFWwindow &window);
-
 int main(void)
 {
 
@@ -74,9 +72,9 @@ int main(void)
 			map.PrintMP(shader, proj, view, ib, renderer);
 			map.ColisionMap();
 			player1.PrintBC(shader, proj, view, ib, renderer);
-
-			player1.MCheck(KeyCheck(*window), map);
+			player1.MCheck(map, *window);
 			
+			Sleep(30);
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
@@ -86,23 +84,4 @@ int main(void)
 	return 0;
 }
 
-int KeyCheck(GLFWwindow& window)
-{
-	if(glfwGetKey(&window, GLFW_KEY_UP))
-	{
-		return 3;
-	}
-	else if (glfwGetKey(&window, GLFW_KEY_DOWN))
-	{
-		return 1;
-	}
-	else if (glfwGetKey(&window, GLFW_KEY_LEFT))
-	{
-		return 2;
-	}
-	else if (glfwGetKey(&window, GLFW_KEY_RIGHT))
-	{
-		return 4;
-	}
-}
  
