@@ -133,6 +133,8 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Background.cpp" />
+    <ClCompile Include="src\Fire.cpp" />
+    <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\SourceFiles\IndexBuffer.cpp" />
     <ClCompile Include="src\Player1.cpp" />
@@ -264,6 +266,8 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Fire.h" />
+    <ClInclude Include="src\HUD.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\SourceFiles\IndexBuffer.h" />
     <ClInclude Include="src\Player1.h" />

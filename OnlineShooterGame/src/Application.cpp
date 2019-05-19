@@ -4,7 +4,6 @@
 
 #include "Background.h"
 #include "Player1.h"
-#include "Map.h"
 
 GLFWwindow* window;
 
@@ -45,7 +44,6 @@ int main(void)
 
 		Background background;
 		Map map;
-		Player1 player1;
 
 		IndexBuffer ib(indices, 6);
 
@@ -62,6 +60,9 @@ int main(void)
 		
 		Renderer renderer;
 
+		HUD hud;
+		Player1 player1(shader, proj, view, ib, renderer);
+
 		while (!glfwWindowShouldClose(window))
 		{
 			renderer.Clear();
@@ -70,8 +71,9 @@ int main(void)
 
 			background.PrintBC(shader, proj, view, ib, renderer);
 			map.PrintMP(shader, proj, view, ib, renderer);
+			hud.PrintHUD(shader, proj, view, ib, renderer);
 			map.ColisionMap();
-			player1.PrintBC(shader, proj, view, ib, renderer);
+			player1.PrintBC();
 			player1.MCheck(map, *window);
 			
 			Sleep(30);

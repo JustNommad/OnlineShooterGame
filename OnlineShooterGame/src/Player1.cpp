@@ -1,12 +1,24 @@
 #include "Player1.h"
 
 
-Player1::Player1()
+Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer)
 {
+	playShad = &shader;
+	p = proj;
+	v = view;
+	ind = &index;
+	rend = &renderer;
+
+	health = 100;
 	dx_ = 120;
 	dy_ = 140;
 	x_ = 1;
 	y_ = 11;
+
+	trans = glm::mat4(1.0f);
+	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	result = trans * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
 	VertexBuffer vb(positions, 4 * 4 * sizeof(float));
 	VertexBufferLayout layout;
 
@@ -14,7 +26,8 @@ Player1::Player1()
 	layout.Push<float>(2);
 	vabc.AddBuffer(vb, layout);
 
-	texture_ = Texture::textureIn(TextFold);
+	texture_1 = Texture::textureIn("res/texture/Marine1.png");
+	texture_2 = Texture::textureIn("res/texture/Marine1Left.png");
 
 	vabc.Unbind();
 	vb.Unbind();
@@ -22,18 +35,32 @@ Player1::Player1()
 
 Player1::~Player1()
 {
-	glDeleteTextures(1, &texture_);
+	glDeleteTextures(1, &texture_1);
+	glDeleteTextures(1, &texture_2);
 }
 
-void Player1::PrintBC(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer)
+void Player1::PrintBC()
 {
 	glm::vec3 translationA(dx_, dy_, 0);
-	Texture::Bind(texture_);
+	if (LEFT_c == true && RIGHT_c == false)
 	{
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-		glm::mat4 mvp = proj * view * model;
-		shader.SetUniformMat4f("u_MVP", mvp);
-		renderer.Draw(vabc, index, shader);
+		Texture::Bind(texture_2);
+		{
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+			glm::mat4 mvp = p * v * model;
+			playShad->SetUniformMat4f("u_MVP", mvp);
+			rend->Draw(vabc, *ind, *playShad);
+		}
+	}
+	else if (LEFT_c == false && RIGHT_c == true)
+	{
+		Texture::Bind(texture_1);
+		{
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
+			glm::mat4 mvp = p * v * model;
+			playShad->SetUniformMat4f("u_MVP", mvp);
+			rend->Draw(vabc, *ind, *playShad);
+		}
 	}
 }
 
@@ -101,6 +128,8 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 	}*/
 	if (glfwGetKey(&window, GLFW_KEY_LEFT))
 	{
+		LEFT_c = true;
+		RIGHT_c = false;
 		int check = map.GetColPoint(x_ - 1, y_);
 		if (check != 1)
 		{
@@ -125,6 +154,8 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 	}
 	if (glfwGetKey(&window, GLFW_KEY_RIGHT))
 	{
+		RIGHT_c = true;
+		LEFT_c = false;
 		int check = map.GetColPoint(x_ + 1, y_);
 		if (check != 1)
 		{
@@ -191,7 +222,98 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 			checkPush = 2;
 		}
 	}
+	if (checkShoot == true)
+	{
+		if (LEFT_c == true && RIGHT_c == false)
+		{
+			ShootLeft(map);
+		}
+		else if (LEFT_c == false && RIGHT_c == true)
+		{
+			ShootRight(map);
+		}
+	}
+	if (glfwGetKey(&window, GLFW_KEY_SPACE) && checkShoot == false)
+	{
+		if (LEFT_c == true && RIGHT_c == false)
+		{
+			ShootLeft(map);
+		}
+		else if(LEFT_c == false && RIGHT_c == true)
+		{
+			ShootRight(map);
+		}
+		checkShoot = true;
+	}
 	map.SetColPoint(x_, y_, 2);
 }
 
+void Player1::ShootLeft(Map& map)
+{
+	if (checkShoot == false)
+	{
+		this->SetPlayerPos(x_ - 1, y_);
+		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
+	}
 
+	if (map.GetColPoint(x_ - 1, y_) != 1)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 0);
+	}
+
+	Shoot_count = Shoot_count + 1;
+	if (Shoot_count == 3)
+	{
+		this->SetPlayerPos(GetXF() - 1, GetYF());;
+		Shoot_count = 0;
+	}
+
+	if (map.GetColPoint(GetXF(), GetYF()) == 1)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 1);
+		this->SetPlayerPos(x_ - 1, y_);
+		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
+		checkShoot = false;
+	}
+	else
+	{
+		this->SetPlayerPosPic(GetdXF() - 40, GetdYF());
+		this->Print(*playShad, p, v, *ind, *rend);
+		map.SetColPoint(GetXF(), GetYF(), 3);
+	}
+}
+
+void Player1::ShootRight(Map& map)
+{
+	if (checkShoot == false)
+	{
+		this->SetPlayerPos(x_ + 1, y_);
+		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
+	}
+
+	if (map.GetColPoint(x_ + 1, y_) != 1)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 0);
+	}
+
+	Shoot_count = Shoot_count + 1;
+	if (Shoot_count == 3)
+	{
+		this->SetPlayerPos(GetXF() + 1, GetYF());;
+		Shoot_count = 0;
+	}
+
+	if (map.GetColPoint(GetXF(), GetYF()) == 1)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 1);
+		this->SetPlayerPos(x_ + 1, y_);
+		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
+		checkShoot = false;
+	}
+	else
+	{
+		this->SetPlayerPosPic(GetdXF() + 40, GetdYF());
+		this->Print(*playShad, p, v, *ind, *rend);
+		map.SetColPoint(GetXF(), GetYF(), 3);
+	}
+}
