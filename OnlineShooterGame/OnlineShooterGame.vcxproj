@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Background.cpp" />
+    <ClCompile Include="src\ClientS.cpp" />
     <ClCompile Include="src\Fire.cpp" />
     <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Map.cpp" />
@@ -266,6 +267,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ClientS.h" />
     <ClInclude Include="src\Fire.h" />
     <ClInclude Include="src\HUD.h" />
     <ClInclude Include="src\Map.h" />

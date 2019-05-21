@@ -43,7 +43,7 @@ void HUD::PrintHUD(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& 
 			renderer.Draw(va, index, shader);
 		}
 	}
-	if (HP >= 61 && HP <= 80)
+	else if (HP >= 61 && HP <= 80)
 	{
 		Texture::Bind(texture_2);
 		{
@@ -53,7 +53,7 @@ void HUD::PrintHUD(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& 
 			renderer.Draw(va, index, shader);
 		}
 	}
-	if (HP >= 41 && HP <= 60)
+	else if (HP >= 41 && HP <= 60)
 	{
 		Texture::Bind(texture_3);
 		{
@@ -63,7 +63,7 @@ void HUD::PrintHUD(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& 
 			renderer.Draw(va, index, shader);
 		}
 	}
-	if (HP >= 21 && HP <= 40)
+	else if (HP >= 21 && HP <= 40)
 	{
 		Texture::Bind(texture_4);
 		{
@@ -73,7 +73,7 @@ void HUD::PrintHUD(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& 
 			renderer.Draw(va, index, shader);
 		}
 	}
-	if (HP <= 20)
+	else if (HP <= 20 && HP > 0)
 	{
 		Texture::Bind(texture_5);
 		{
@@ -83,7 +83,7 @@ void HUD::PrintHUD(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& 
 			renderer.Draw(va, index, shader);
 		}
 	}
-	if (HP <= 0)
+	else if (HP <= 0)
 	{
 		Texture::Bind(texture_6);
 		{

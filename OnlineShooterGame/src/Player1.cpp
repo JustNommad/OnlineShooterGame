@@ -1,6 +1,5 @@
 #include "Player1.h"
 
-
 Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer)
 {
 	playShad = &shader;
@@ -14,6 +13,11 @@ Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& in
 	dy_ = 140;
 	x_ = 1;
 	y_ = 11;
+
+	server::ClientS();
+	server::SendingPos(P_GameState, 1);
+	server::SendingPos(P_PlayerPos_X, 4);
+	server::SendingPos(P_PlayerPos_Y, 11);
 
 	trans = glm::mat4(1.0f);
 	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));

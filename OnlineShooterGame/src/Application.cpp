@@ -1,13 +1,13 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
 #include "Background.h"
 #include "Player1.h"
 
 GLFWwindow* window;
 
-int main(void)
+
+int main(int argc, char* argv[])
 {
 
 	if (!glfwInit())
@@ -59,7 +59,6 @@ int main(void)
 		shader.Unbind();
 		
 		Renderer renderer;
-
 		HUD hud;
 		Player1 player1(shader, proj, view, ib, renderer);
 
@@ -71,7 +70,7 @@ int main(void)
 
 			background.PrintBC(shader, proj, view, ib, renderer);
 			map.PrintMP(shader, proj, view, ib, renderer);
-			hud.PrintHUD(shader, proj, view, ib, renderer);
+			player1.PrintHUD(shader, proj, view, ib, renderer);
 			map.ColisionMap();
 			player1.PrintBC();
 			player1.MCheck(map, *window);

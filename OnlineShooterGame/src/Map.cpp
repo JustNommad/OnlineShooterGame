@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <iostream>
 
 Map::Map()
 {
@@ -192,6 +193,10 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		glm::mat4 mvp = proj * view * model;
 		shader.SetUniformMat4f("u_MVP", mvp);
 		renderer.Draw(va6, index, shader);
+	}
+	if (server::Get_gamestate() == true)
+	{
+		SetColPoint(server::Get_x(), server::Get_y(), 4);
 	}
 }
 
