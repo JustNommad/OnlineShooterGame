@@ -34,7 +34,7 @@ bool ProcessPacket(int index, Packet packettype) {
 
 			Packet msgtype = P_PlayerPos_X;
 			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
+			send(Connections[i], (char*)&x, sizeof(int), NULL);
 		}
 		break;
 	}
@@ -50,7 +50,7 @@ bool ProcessPacket(int index, Packet packettype) {
 
 			Packet msgtype = P_PlayerPos_Y;
 			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
+			send(Connections[i], (char*)&x, sizeof(int), NULL);
 		}
 		break;
 	}
@@ -162,7 +162,7 @@ bool ProcessPacket(int index, Packet packettype) {
 
 			Packet msgtype = P_GameState;
 			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
+			send(Connections[i], (char*)&x, sizeof(int), NULL);
 		}
 		break;
 	}
@@ -170,7 +170,6 @@ bool ProcessPacket(int index, Packet packettype) {
 		std::cout << "Unrecognized packet: " << packettype << std::endl;
 		break;
 	}
-
 	return true;
 }
 

@@ -14,64 +14,64 @@
 			case P_PlayerPos_X:
 			{
 				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				X_ = (int)data;
+				recv(Connection, (char*)&data, sizeof(int), NULL);
+				dX_ = data;
 				break;
 			}
 			case P_PlayerPos_Y:
 			{
 				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				Y_ = (int)data;
+				recv(Connection, (char*)&data, sizeof(int), NULL);
+				dY_ = data;
 				break;
 			}
 			case P_PlayerPosCol_X:
 			{
 				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				dX_ = (int)data;
+				recv(Connection, (char*)&data, sizeof(int), NULL);
+				X_ = data;
 				break;
 			}
 			case P_PlayerPosCol_Y:
 			{
 				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				dY_ = (int)data;
+				recv(Connection, (char*)&data, sizeof(int), NULL);
+				Y_ = data;
 				break;
 			}
 			case P_FirePos_X:
 			{
 				int data;
 				recv(Connection, (char*)& data, sizeof(int), NULL);
-				//std::cout << msg << std::endl;
+				xdf_ = data;
 				break;
 			}
 			case P_FirePos_Y:
 			{
 				int data;
 				recv(Connection, (char*)& data, sizeof(int), NULL);
-				//std::cout << msg << std::endl;
+				ydf_ = data;
 				break;
 			}
 			case P_FirePosCol_X:
 			{
 				int data;
 				recv(Connection, (char*)& data, sizeof(int), NULL);
-				//std::cout << msg << std::endl;
+				xf_ = data;
 				break;
 			}
 			case P_FirePosCol_Y:
 			{
 				int data;
 				recv(Connection, (char*)& data, sizeof(int), NULL);
-				//std::cout << msg << std::endl;
+				yf_ = data;
 				break;
 			}
 			case P_GameState:
 			{
 				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				if ((int)data == 1)
+				recv(Connection, (char*)&data, sizeof(int), NULL);
+				if (data == 1)
 				{
 					GameState = true;
 				}
@@ -125,18 +125,19 @@
 			else
 			{
 				std::cout << "Connected" << std::endl;
+				CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, NULL, NULL, NULL);
 			}
 			return 0;
 		}
 		void SendingPos(Packet packettype, int x)
 		{
-			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, NULL, NULL, NULL);
+		
 			int X = x;
 
 			Packet Packettype = packettype;
 			send(Connection, (char*)& Packettype, sizeof(Packet), NULL);
 			//send(Connection, (char*)& msg_size, sizeof(int), NULL);
-			send(Connection, (char*)& X, sizeof(int), NULL);
+			send(Connection, (char*)&X, sizeof(int), NULL);
 			Sleep(10);
 		}
 

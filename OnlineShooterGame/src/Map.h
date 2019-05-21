@@ -49,8 +49,14 @@ private:
 	 20.0f,   200.0f, 1.0f, 1.0f,	//2
 	-50.0f,   200.0f, 0.0f, 1.0f	//3
 	};
-	GLuint texture_1, texture_2, texture_3, texture_4, texture_5, texture_6, texture_7;
-	VertexArray va1, va2, va3, va4, va5, va6, va7;
+	float EnemyP[16]{
+	 -65.0f,  -65.0f, 0.0f, 0.0f,	//0
+	  65.0f,  -65.0f, 1.0f, 0.0f,	//1
+	  65.0f,   65.0f, 1.0f, 1.0f,	//2
+	 -65.0f,   65.0f, 0.0f, 1.0f,	//3
+	};
+	GLuint texture_1, texture_2, texture_3, texture_4, texture_5, texture_6, texture_7, texture_8E;
+	VertexArray va1, va2, va3, va4, va5, va6, va7, va8E;
 	int count = 0;
 	int ColisMap[13][17]{
 		{1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1, 1},

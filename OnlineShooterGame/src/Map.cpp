@@ -10,7 +10,8 @@ Map::Map()
 	VertexBuffer vb4(positionsM3, 4 * 4 * sizeof(float));
 	VertexBuffer vb5(positionsM4, 4 * 4 * sizeof(float));
 	VertexBuffer vb6(positionsM5, 4 * 4 * sizeof(float));
-	VertexBufferLayout layout1, layout2, layout3, layout4, layout5, layout6, layout7;
+	VertexBuffer vb7E(EnemyP, 4 * 4 * sizeof(float));
+	VertexBufferLayout layout1, layout2, layout3, layout4, layout5, layout6, layout7, layout8E;
 
 	layout1.Push<float>(2);
 	layout1.Push<float>(2);
@@ -26,6 +27,8 @@ Map::Map()
 	layout6.Push<float>(2);
 	layout7.Push<float>(2);
 	layout7.Push<float>(2);
+	layout8E.Push<float>(2);
+	layout8E.Push<float>(2);
 
 	va1.AddBuffer(vb1, layout1);
 	va2.AddBuffer(vb1, layout2);
@@ -34,6 +37,7 @@ Map::Map()
 	va5.AddBuffer(vb4, layout5);
 	va6.AddBuffer(vb5, layout6);
 	va7.AddBuffer(vb6, layout7);
+	va8E.AddBuffer(vb7E, layout8E);
 	texture_1 = Texture::textureIn("res/texture/TileR.bmp");
 	texture_2 = Texture::textureIn("res/texture/TileL.bmp");
 	texture_3 = Texture::textureIn("res/texture/Tile2.bmp");
@@ -41,6 +45,7 @@ Map::Map()
 	texture_5 = Texture::textureIn("res/texture/Tile3.bmp");
 	texture_6 = Texture::textureIn("res/texture/Tile4.bmp");
 	texture_7 = Texture::textureIn("res/texture/Tile5.bmp");
+	texture_8E = Texture::textureIn("res/texture/Player2Right.png");
 
 	va1.Unbind();
 	vb1.Unbind();
@@ -66,6 +71,7 @@ Map::~Map()
 	glDeleteTextures(1, &texture_5);
 	glDeleteTextures(1, &texture_6);
 	glDeleteTextures(1, &texture_7);
+	glDeleteTextures(1, &texture_8E);
 }
 
 void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer)
@@ -194,9 +200,18 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 		shader.SetUniformMat4f("u_MVP", mvp);
 		renderer.Draw(va6, index, shader);
 	}
-	if (server::Get_gamestate() == true)
+	if (server::Get_gamestate() && server::Get_y() > 0 && server::Get_y() > 0)
 	{
 		SetColPoint(server::Get_x(), server::Get_y(), 4);
+		glm::vec3 Enemy(server::Get_dx(), server::Get_dy(), 0);
+
+		Texture::Bind(texture_8E);
+		{
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), Enemy);
+			glm::mat4 mvp = proj * view * model;
+			shader.SetUniformMat4f("u_MVP", mvp);
+			renderer.Draw(va8E, index, shader);
+		}
 	}
 }
 

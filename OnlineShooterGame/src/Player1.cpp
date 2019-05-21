@@ -16,8 +16,6 @@ Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& in
 
 	server::ClientS();
 	server::SendingPos(P_GameState, 1);
-	server::SendingPos(P_PlayerPos_X, 4);
-	server::SendingPos(P_PlayerPos_Y, 11);
 
 	trans = glm::mat4(1.0f);
 	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -77,10 +75,12 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 	{
 		map.SetColPoint(x_, y_, 0);
 		dy_ = dy_ - 28;
+		server::SendingPos(P_PlayerPos_Y, dy_);
 		Down_count++;
 		if (Down_count == 3)
 		{
 			y_ = y_ + 1;
+			server::SendingPos(P_PlayerPosCol_Y, y_);
 			Down_count = 0;
 		}
 	}
@@ -138,10 +138,13 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		if (check != 1)
 		{
 			dx_ = dx_ - 40;
+			server::SendingPos(P_PlayerPos_X, dx_);
 			Left_count++;
 			if (Left_count == 3)
 			{
 				x_ = x_ - 1;
+				server::SendingPos(P_PlayerPosCol_X, x_);
+				
 				Left_count = 0;
 				if (Up_count > 0)
 				{
@@ -164,10 +167,12 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		if (check != 1)
 		{
 			dx_ = dx_ + 40;
+			server::SendingPos(P_PlayerPos_X, dx_);
 			Right_count++;
 			if (Right_count == 3)
 			{
 				x_ = x_ + 1; 
+				server::SendingPos(P_PlayerPosCol_X, x_);
 				Right_count = 0;
 				if (Up_count > 0)
 				{
@@ -189,6 +194,7 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		if (check != 1)
 		{
 			y_ = y_ - 1;
+			server::SendingPos(P_PlayerPosCol_Y, y_);
 		}
 	}
 	if (checkPush == 1)
@@ -197,10 +203,12 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		if (check != 1)
 		{
 			dy_ = dy_ + 28;
+			server::SendingPos(P_PlayerPos_X, dy_);
 			Up_count = Up_count + 1;
 			if (Up_count == 5 || Up_count == 8)
 			{
 				y_ = y_ - 1;
+				server::SendingPos(P_PlayerPosCol_Y, y_);
 			}
 			else if (Up_count == 9)
 			{
@@ -211,12 +219,14 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		else if (map.GetColPoint(x_, y_ - 1) == 1 && map.GetColPoint(x_, y_ + 1) == 0 && Up_count >= 5)
 		{
 			dy_ = dy_ + 28;
+			server::SendingPos(P_PlayerPos_Y, dy_);
 			Up_count = 0;
 			checkPush = 2;
 		}
 		else if (map.GetColPoint(x_, y_ - 1) == 1 && map.GetColPoint(x_, y_ + 1) == 0 && Up_count < 5)
 		{
 			dy_ = dy_ + 84;
+			server::SendingPos(P_PlayerPos_Y, dy_);
 			Up_count = 0;
 			checkPush = 2;
 		}
@@ -257,7 +267,11 @@ void Player1::ShootLeft(Map& map)
 	if (checkShoot == false)
 	{
 		this->SetPlayerPos(x_ - 1, y_);
+		server::SendingPos(P_FirePosCol_X, x_ - 1);
+		server::SendingPos(P_FirePosCol_Y, y_);
 		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
+		server::SendingPos(P_FirePos_X, dx_ - 80);
+		server::SendingPos(P_FirePos_Y, dy_ - 17);
 	}
 
 	if (map.GetColPoint(x_ - 1, y_) != 1)
@@ -268,7 +282,9 @@ void Player1::ShootLeft(Map& map)
 	Shoot_count = Shoot_count + 1;
 	if (Shoot_count == 3)
 	{
-		this->SetPlayerPos(GetXF() - 1, GetYF());;
+		this->SetPlayerPos(GetXF() - 1, GetYF());
+		server::SendingPos(P_FirePosCol_X, GetXF() - 1);
+		server::SendingPos(P_FirePosCol_Y, GetYF());
 		Shoot_count = 0;
 	}
 
@@ -276,12 +292,18 @@ void Player1::ShootLeft(Map& map)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 1);
 		this->SetPlayerPos(x_ - 1, y_);
+		server::SendingPos(P_FirePosCol_X, x_ - 1);
+		server::SendingPos(P_FirePosCol_Y, y_);
 		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
+		server::SendingPos(P_FirePos_X, dx_ - 80);
+		server::SendingPos(P_FirePos_Y, dy_ - 17);
 		checkShoot = false;
 	}
 	else
 	{
 		this->SetPlayerPosPic(GetdXF() - 40, GetdYF());
+		server::SendingPos(P_FirePos_X, GetdXF() - 40);
+		server::SendingPos(P_FirePos_Y, GetdYF());
 		this->Print(*playShad, p, v, *ind, *rend);
 		map.SetColPoint(GetXF(), GetYF(), 3);
 	}
@@ -292,7 +314,11 @@ void Player1::ShootRight(Map& map)
 	if (checkShoot == false)
 	{
 		this->SetPlayerPos(x_ + 1, y_);
+		server::SendingPos(P_FirePosCol_X, x_ + 1);
+		server::SendingPos(P_FirePosCol_Y, y_);
 		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
+		server::SendingPos(P_FirePos_X, dx_ + 80);
+		server::SendingPos(P_FirePos_Y, dy_ - 17);
 	}
 
 	if (map.GetColPoint(x_ + 1, y_) != 1)
@@ -303,7 +329,9 @@ void Player1::ShootRight(Map& map)
 	Shoot_count = Shoot_count + 1;
 	if (Shoot_count == 3)
 	{
-		this->SetPlayerPos(GetXF() + 1, GetYF());;
+		this->SetPlayerPos(GetXF() + 1, GetYF());
+		server::SendingPos(P_FirePosCol_X, GetXF() + 1);
+		server::SendingPos(P_FirePosCol_Y, GetYF());
 		Shoot_count = 0;
 	}
 
@@ -311,12 +339,18 @@ void Player1::ShootRight(Map& map)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 1);
 		this->SetPlayerPos(x_ + 1, y_);
+		server::SendingPos(P_FirePosCol_X, x_ + 1);
+		server::SendingPos(P_FirePosCol_Y, y_);
 		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
+		server::SendingPos(P_FirePos_X, dx_ + 80);
+		server::SendingPos(P_FirePos_Y, dy_ - 17);
 		checkShoot = false;
 	}
 	else
 	{
 		this->SetPlayerPosPic(GetdXF() + 40, GetdYF());
+		server::SendingPos(P_FirePos_X, GetdXF() + 40);
+		server::SendingPos(P_FirePos_Y, GetdYF());
 		this->Print(*playShad, p, v, *ind, *rend);
 		map.SetColPoint(GetXF(), GetYF(), 3);
 	}
