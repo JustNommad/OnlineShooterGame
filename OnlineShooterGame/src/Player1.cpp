@@ -203,7 +203,7 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 		if (check != 1)
 		{
 			dy_ = dy_ + 28;
-			server::SendingPos(P_PlayerPos_X, dy_);
+			server::SendingPos(P_PlayerPos_Y, dy_);
 			Up_count = Up_count + 1;
 			if (Up_count == 5 || Up_count == 8)
 			{

@@ -112,11 +112,11 @@
 			}
 			SOCKADDR_IN addr;
 			int sizeofaddr = sizeof(addr);
-			addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-			addr.sin_port = htons(1111);
+			addr.sin_addr.s_addr = inet_addr("192.168.31.192");
+			addr.sin_port = htons(1234);
 			addr.sin_family = AF_INET;
 
-			Connection = socket(AF_INET, SOCK_STREAM, NULL);
+			Connection = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if (connect(Connection, (SOCKADDR*)& addr, sizeof(addr)) != 0)
 			{
 				std::cout << "Error connect" << std::endl;
@@ -138,7 +138,6 @@
 			send(Connection, (char*)& Packettype, sizeof(Packet), NULL);
 			//send(Connection, (char*)& msg_size, sizeof(int), NULL);
 			send(Connection, (char*)&X, sizeof(int), NULL);
-			Sleep(10);
 		}
 
 		int Get_x() { return X_; }
