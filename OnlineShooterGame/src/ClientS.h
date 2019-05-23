@@ -6,27 +6,38 @@
 #pragma warning(disable:4996)
 
 enum Packet {
-	P_PlayerPos_X,
-	P_PlayerPos_Y,
-	P_PlayerPosCol_X,
-	P_PlayerPosCol_Y,
-	P_FirePos_X,
-	P_FirePos_Y,
-	P_FirePosCol_X,
-	P_FirePosCol_Y,
-	P_GameState
+	P_PlayerData
 };
 
 namespace server
 {
+	struct PlayerData
+	{
+		int Col_x, Col_y;
+		int Pic_x, Pic_y;
+		int Fire_x, Fire_y;
+		int FirePic_x, FirePic_y;
+		int health;
+		bool gamestate;
+		bool right_c, left_c;
+		bool hit;
+	};
 	bool ProcessPacket(Packet packettype);
 	void ClientHandler();
 	int ClientS();
-	void SendingPos(Packet packettype, int x);
+	void SendingPos(Packet packettype, PlayerData x);
 
 	int Get_x();
-	int Get_y();
+	int Get_y() ;
 	int Get_dx();
 	int Get_dy();
+	int Get_fx();
+	int Get_fy();
+	int Get_fdx();
+	int Get_fdy();
 	bool Get_gamestate();
+	bool Get_Hit();
+	bool Get_Left();
+	bool Get_Right();
+	int Get_HP();
 }

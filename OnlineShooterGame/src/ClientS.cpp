@@ -5,80 +5,36 @@
 	{
 		int X_ = 0, Y_ = 0;
 		int dX_ = 0, dY_ = 0;
-		int xf_ = 0, yf_ = 0;
-		int xdf_ = 0, ydf_ = 0;
+		int fx_ = 0, fy_ = 0;
+		int fdx_ = 0, fdy_ = 0;
+		int HP = 0;
 		bool GameState = false;
+		bool right = false;
+		bool left = false;
+		bool hit = false;
 		SOCKET Connection;
+		PlayerData playerdata_;
+
 		bool ProcessPacket(Packet packettype) {
+			ZeroMemory(&playerdata_, sizeof(playerdata_));
 			switch (packettype) {
-			case P_PlayerPos_X:
+			case P_PlayerData:
 			{
-				int data;
-				recv(Connection, (char*)&data, sizeof(int), NULL);
-				dX_ = data;
-				break;
-			}
-			case P_PlayerPos_Y:
-			{
-				int data;
-				recv(Connection, (char*)&data, sizeof(int), NULL);
-				dY_ = data;
-				break;
-			}
-			case P_PlayerPosCol_X:
-			{
-				int data;
-				recv(Connection, (char*)&data, sizeof(int), NULL);
-				X_ = data;
-				break;
-			}
-			case P_PlayerPosCol_Y:
-			{
-				int data;
-				recv(Connection, (char*)&data, sizeof(int), NULL);
-				Y_ = data;
-				break;
-			}
-			case P_FirePos_X:
-			{
-				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				xdf_ = data;
-				break;
-			}
-			case P_FirePos_Y:
-			{
-				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				ydf_ = data;
-				break;
-			}
-			case P_FirePosCol_X:
-			{
-				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				xf_ = data;
-				break;
-			}
-			case P_FirePosCol_Y:
-			{
-				int data;
-				recv(Connection, (char*)& data, sizeof(int), NULL);
-				yf_ = data;
-				break;
-			}
-			case P_GameState:
-			{
-				int data;
-				recv(Connection, (char*)&data, sizeof(int), NULL);
-				if (data == 1)
-				{
-					GameState = true;
-				}
-				else
-				{
-					GameState = false;
-				}
+				recv(Connection, (char*)&playerdata_, sizeof(playerdata_), NULL);
+				X_ = playerdata_.Col_x;
+				Y_ = playerdata_.Col_y;
+				dX_ = playerdata_.Pic_x;
+				dY_ = playerdata_.Pic_y;
+				fx_ = playerdata_.Fire_x;
+				fy_ = playerdata_.Fire_y;
+				fdx_ = playerdata_.FirePic_x;
+				fdy_ = playerdata_.FirePic_y;
+				GameState = playerdata_.gamestate;
+				right = playerdata_.right_c;
+				left = playerdata_.left_c;
+				hit = playerdata_.hit;
+				HP = playerdata_.health;
+
 				break;
 			}
 			default:
@@ -129,20 +85,28 @@
 			}
 			return 0;
 		}
-		void SendingPos(Packet packettype, int x)
+		void SendingPos(Packet packettype, PlayerData x)
 		{
 		
-			int X = x;
+			PlayerData pd_ = x;
 
 			Packet Packettype = packettype;
 			send(Connection, (char*)& Packettype, sizeof(Packet), NULL);
 			//send(Connection, (char*)& msg_size, sizeof(int), NULL);
-			send(Connection, (char*)&X, sizeof(int), NULL);
+			send(Connection, (char*)&pd_, sizeof(pd_), NULL);
 		}
 
 		int Get_x() { return X_; }
 		int Get_y() { return Y_; }
 		int Get_dx() { return dX_; }
 		int Get_dy() { return dY_; }
+		int Get_fx() { return fx_; }
+		int Get_fy() { return fy_; }
+		int Get_fdx() { return fdx_; }
+		int Get_fdy() { return fdy_; }
 		bool Get_gamestate() { return GameState; }
+		bool Get_Hit() { return hit; }
+		bool Get_Left() { return left; }
+		bool Get_Right() { return right; }
+		int Get_HP() { return HP; }
 	}

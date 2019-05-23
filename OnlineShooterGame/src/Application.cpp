@@ -64,20 +64,21 @@ int main(int argc, char* argv[])
 
 		while (!glfwWindowShouldClose(window))
 		{
+			glfwPollEvents();
 			renderer.Clear();
 
 			shader.Bind();
 
 			background.PrintBC(shader, proj, view, ib, renderer);
 			map.PrintMP(shader, proj, view, ib, renderer);
-			player1.PrintHUD(shader, proj, view, ib, renderer);
 			map.ColisionMap();
-			player1.PrintBC();
+			player1.PrintHUD(shader, proj, view, ib, renderer);
 			player1.MCheck(map, *window);
+			player1.PrintBC();
 			
-			Sleep(30);
+			Sleep(15);
 			glfwSwapBuffers(window);
-			glfwPollEvents();
+
 		}
 	}
 

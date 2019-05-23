@@ -8,181 +8,45 @@
 SOCKET Connections[2];
 int Counter = 0;
 
+struct PlayerData
+{
+	int Col_x, Col_y;
+	int Pic_x, Pic_y;
+	int Fire_x, Fire_y;
+	int FirePic_x, FirePic_y;
+	int health;
+	bool gamestate;
+	bool right_c, left_c;
+	bool hit;
+};
+
 enum Packet {
-	P_PlayerPos_X,
-	P_PlayerPos_Y,
-	P_PlayerPosCol_X,
-	P_PlayerPosCol_Y,
-	P_FirePos_X,
-	P_FirePos_Y,
-	P_FirePosCol_X,
-	P_FirePosCol_Y, 
-	P_GameState
+	P_PlayerData
 };
 
 bool ProcessPacket(int index, Packet packettype) {
+	PlayerData playerdata_;
 	switch (packettype) {
-	case P_PlayerPos_X:
+	case P_PlayerData:
 	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
+		ZeroMemory(&playerdata_, sizeof(playerdata_));
 
+		recv(Connections[index], (char*)& playerdata_, sizeof(playerdata_), NULL);
 		for (int i = 0; i < Counter; i++) {
 			if (i == index) {
 				continue;
 			}
-
-			Packet msgtype = P_PlayerPos_X;
+			Packet msgtype = P_PlayerData;
 			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)&x, sizeof(int), NULL);
+			send(Connections[i], (char*)& playerdata_, sizeof(playerdata_), NULL);
+			break;
 		}
-		break;
-	}
-	case P_PlayerPos_Y:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_PlayerPos_Y;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)&x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_PlayerPosCol_X:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_PlayerPosCol_X;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_PlayerPosCol_Y:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_PlayerPosCol_Y;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_FirePos_X:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_FirePos_X;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_FirePos_Y:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_FirePos_Y;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_FirePosCol_X:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_PlayerPosCol_X;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_FirePosCol_Y:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i > 0)
-			{
-				Packet msgtype = P_FirePosCol_Y;
-				send(Connections[i - 1], (char*)& msgtype, sizeof(Packet), NULL);
-				send(Connections[i - 1], (char*)& x, sizeof(int), NULL);
-			}
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_FirePosCol_Y;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)& x, sizeof(int), NULL);
-		}
-		break;
-	}
-	case P_GameState:
-	{
-		int x;
-		recv(Connections[index], (char*)& x, sizeof(int), NULL);
-
-		for (int i = 0; i < Counter; i++) {
-			if (i > 0)
-			{
-				Packet msgtype = P_GameState;
-				send(Connections[i - 1], (char*)& msgtype, sizeof(Packet), NULL);
-				send(Connections[i - 1], (char*)& x, sizeof(int), NULL);
-			}
-			if (i == index) {
-				continue;
-			}
-
-			Packet msgtype = P_GameState;
-			send(Connections[i], (char*)& msgtype, sizeof(Packet), NULL);
-			send(Connections[i], (char*)&x, sizeof(int), NULL);
-		}
-		break;
-	}
 	default:
 		std::cout << "Unrecognized packet: " << packettype << std::endl;
 		break;
 	}
 	return true;
+	}
 }
 
 void ClientHandler(int index) {
@@ -225,24 +89,6 @@ int main(int argc, char* argv[])
 		}
 		else {
 			std::cout << "Client Connected!\n";
-
-			int x1, y1, x2, y2;
-			Packet X1, X2, Y1, Y2;
-
-			X1 = P_PlayerPos_X; x1 = 140;
-			Y1 = P_PlayerPos_Y; y1 = 120;
-			X2 = P_PlayerPosCol_X; x2 = 4;
-			Y2 = P_PlayerPosCol_Y; y2 = 11;
-
-			send(newConnection, (char*)& X1, sizeof(Packet), NULL);
-			send(newConnection, (char*)& x1, sizeof(int), NULL);
-			send(newConnection, (char*)& Y1, sizeof(Packet), NULL);
-			send(newConnection, (char*)& y1, sizeof(int), NULL);
-			send(newConnection, (char*)& X2, sizeof(Packet), NULL);
-			send(newConnection, (char*)& x2, sizeof(int), NULL);
-			send(newConnection, (char*)& Y2, sizeof(Packet), NULL);
-			send(newConnection, (char*)& y2, sizeof(int), NULL);
-
 			Connections[i] = newConnection;
 			Counter++;
 			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ClientHandler, (LPVOID)(i), NULL, NULL);
