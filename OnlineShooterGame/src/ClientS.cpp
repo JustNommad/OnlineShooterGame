@@ -11,7 +11,6 @@
 		bool GameState = false;
 		bool right = false;
 		bool left = false;
-		bool hit = false;
 		SOCKET Connection;
 		PlayerData playerdata_;
 
@@ -32,7 +31,6 @@
 				GameState = playerdata_.gamestate;
 				right = playerdata_.right_c;
 				left = playerdata_.left_c;
-				hit = playerdata_.hit;
 				HP = playerdata_.health;
 
 				break;
@@ -105,7 +103,6 @@
 		int Get_fdx() { return fdx_; }
 		int Get_fdy() { return fdy_; }
 		bool Get_gamestate() { return GameState; }
-		bool Get_Hit() { return hit; }
 		bool Get_Left() { return left; }
 		bool Get_Right() { return right; }
 		int Get_HP() { return HP; }

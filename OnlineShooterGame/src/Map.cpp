@@ -46,6 +46,7 @@ Map::Map()
 	texture_6 = Texture::textureIn("res/texture/Tile4.bmp");
 	texture_7 = Texture::textureIn("res/texture/Tile5.bmp");
 	texture_8E = Texture::textureIn("res/texture/Player2Right.png");
+	texture_8E2 = Texture::textureIn("res/texture/Player2Left.png");
 
 	va1.Unbind();
 	vb1.Unbind();
@@ -72,6 +73,7 @@ Map::~Map()
 	glDeleteTextures(1, &texture_6);
 	glDeleteTextures(1, &texture_7);
 	glDeleteTextures(1, &texture_8E);
+	glDeleteTextures(1, &texture_8E2);
 }
 
 void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer)
@@ -90,7 +92,6 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 	glm::vec3 translation10(0, 740, 0);
 	glm::vec3 translation11(360, 860, 0);
 	glm::vec3 translation12(840, 460, 0);
-	//glm::vec3 translation13(600, 600, 0);
 	glm::vec3 translation14(960, 140, 0);
 
 	Texture::Bind(texture_1);
@@ -202,16 +203,24 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 	}
 	if (server::Get_gamestate() && server::Get_y() > 0 && server::Get_y() > 0)
 	{
-		SetColPoint(server::Get_x(), server::Get_y(), 4);
+		EnemyCheck();
 		glm::vec3 Enemy(server::Get_dx(), server::Get_dy(), 0);
 
-		Texture::Bind(texture_8E);
+		if (server::Get_Left() == true && server::Get_Right() == false)
+		{
+			Texture::Bind(texture_8E2);
+		}
+		else if (server::Get_Right() == true && server::Get_Left() == false)
+		{
+			Texture::Bind(texture_8E);
+		}
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), Enemy);
 			glm::mat4 mvp = proj * view * model;
 			shader.SetUniformMat4f("u_MVP", mvp);
 			renderer.Draw(va8E, index, shader);
 		}
+		this->Print(shader, proj, view, index, renderer);
 	}
 }
 
@@ -236,4 +245,44 @@ void Map::SetColPoint(int x, int y, int point)
 int Map::GetColPoint(int x, int y)
 {
 	return ColisMap[y][x];
+}
+
+void Map::EnemyCheck()
+{
+	SetColPoint(server::Get_x(), server::Get_y(), 4);
+	if (GetColPoint(server::Get_x() - 1, server::Get_y()) == 4)
+	{
+		SetColPoint(server::Get_x() - 1, server::Get_y(), 0);
+	}
+	else if (GetColPoint(server::Get_x() + 1, server::Get_y()) == 4)
+	{
+		SetColPoint(server::Get_x() + 1, server::Get_y(), 0);
+	}
+	else if (GetColPoint(server::Get_x(), server::Get_y() - 1) == 4)
+	{
+		SetColPoint(server::Get_x(), server::Get_y() - 1, 0);
+	}
+	else if (GetColPoint(server::Get_x(), server::Get_y() + 1) == 4)
+	{
+		SetColPoint(server::Get_x(), server::Get_y() + 1, 0);
+	}
+	else if (GetColPoint(server::Get_x() - 1, server::Get_y() - 1) == 4)
+	{
+		SetColPoint(server::Get_x() - 1, server::Get_y() + 1, 0);
+	}
+	else if (GetColPoint(server::Get_x()+ 1, server::Get_y() + 1) == 4)
+	{
+		SetColPoint(server::Get_x() + 1, server::Get_y() + 1, 0);
+	}
+	this->SetPlayerPos(server::Get_fx(), server::Get_fy());
+	SetColPoint(server::Get_fx(), server::Get_fy(), 3);
+	if (GetColPoint(server::Get_x() - 1, server::Get_y()) == 3)
+	{
+		SetColPoint(server::Get_fx() - 1, server::Get_fy(), 0);
+	}
+	else if (GetColPoint(server::Get_x() + 1, server::Get_y()) == 3)
+	{
+		SetColPoint(server::Get_fx() + 1, server::Get_fy(), 0);
+	}
+	this->SetPlayerPosPic(server::Get_fdx(), server::Get_fdy());
 }

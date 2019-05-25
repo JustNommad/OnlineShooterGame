@@ -6,10 +6,10 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-
+#include "Fire.h"
 #include "ClientS.h"
 
-class Map
+class Map : public Fire
 {
 private:
 	float positionsRL[16]{
@@ -55,7 +55,7 @@ private:
 	  65.0f,   65.0f, 1.0f, 1.0f,	//2
 	 -65.0f,   65.0f, 0.0f, 1.0f,	//3
 	};
-	GLuint texture_1, texture_2, texture_3, texture_4, texture_5, texture_6, texture_7, texture_8E;
+	GLuint texture_1, texture_2, texture_3, texture_4, texture_5, texture_6, texture_7, texture_8E, texture_8E2;
 	VertexArray va1, va2, va3, va4, va5, va6, va7, va8E;
 	int count = 0;
 	int ColisMap[13][17]{
@@ -81,5 +81,6 @@ public:
 	void ColisionMap();
 	void SetColPoint(int x, int y, int point);
 	int GetColPoint(int x, int y);
+	void EnemyCheck();
 };
 

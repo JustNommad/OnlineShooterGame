@@ -6,7 +6,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Map.h"
-#include "Fire.h"
 #include "HUD.h"
 #include "ClientS.h"
 
@@ -36,8 +35,10 @@ private:
 	bool UP_c = false, DOWN_c = false, LEFT_c = true, RIGHT_c = false;
 	bool checkShoot = false;
 	bool gamestat = true;
+	int gamestatCounter = 0;
 	int checkPush = 0;
 	int Up_count = 0, Down_count = 0, Right_count = 0, Left_count = 0, Shoot_count = 0;
+	int OneMove = 0; 
 public:
 	Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer);
 	~Player1();
@@ -46,4 +47,5 @@ public:
 	void PrintBC();
 	void ShootLeft(Map& map);
 	void ShootRight(Map& map);
+	void CheckPlayerGameStat();
 };

@@ -6,6 +6,12 @@
 
 GLFWwindow* window;
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
 
 int main(int argc, char* argv[])
 {
@@ -23,7 +29,7 @@ int main(int argc, char* argv[])
 		glfwTerminate();
 		return -1;
 	}
-
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(1);

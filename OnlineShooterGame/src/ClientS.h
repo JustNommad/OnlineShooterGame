@@ -20,7 +20,6 @@ namespace server
 		int health;
 		bool gamestate;
 		bool right_c, left_c;
-		bool hit;
 	};
 	bool ProcessPacket(Packet packettype);
 	void ClientHandler();
@@ -36,7 +35,6 @@ namespace server
 	int Get_fdx();
 	int Get_fdy();
 	bool Get_gamestate();
-	bool Get_Hit();
 	bool Get_Left();
 	bool Get_Right();
 	int Get_HP();

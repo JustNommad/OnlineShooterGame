@@ -17,7 +17,6 @@ struct PlayerData
 	int health;
 	bool gamestate;
 	bool right_c, left_c;
-	bool hit;
 };
 
 enum Packet {
@@ -32,7 +31,7 @@ bool ProcessPacket(int index, Packet packettype) {
 		ZeroMemory(&playerdata_, sizeof(playerdata_));
 
 		recv(Connections[index], (char*)& playerdata_, sizeof(playerdata_), NULL);
-		for (int i = 0; i < Counter; i++) {
+		for (int i = 0; i <= Counter; i++) {
 			if (i == index) {
 				continue;
 			}
