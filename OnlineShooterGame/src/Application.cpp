@@ -65,7 +65,6 @@ int main(int argc, char* argv[])
 		shader.Unbind();
 		
 		Renderer renderer;
-		HUD hud;
 		Player1 player1(shader, proj, view, ib, renderer);
 
 		while (!glfwWindowShouldClose(window))

@@ -270,19 +270,9 @@ void Map::EnemyCheck()
 	{
 		SetColPoint(server::Get_x() - 1, server::Get_y() + 1, 0);
 	}
-	else if (GetColPoint(server::Get_x()+ 1, server::Get_y() + 1) == 4)
+	else if (GetColPoint(server::Get_x() + 1, server::Get_y() + 1) == 4)
 	{
 		SetColPoint(server::Get_x() + 1, server::Get_y() + 1, 0);
-	}
-	this->SetPlayerPos(server::Get_fx(), server::Get_fy());
-	SetColPoint(server::Get_fx(), server::Get_fy(), 3);
-	if (GetColPoint(server::Get_x() - 1, server::Get_y()) == 3)
-	{
-		SetColPoint(server::Get_fx() - 1, server::Get_fy(), 0);
-	}
-	else if (GetColPoint(server::Get_x() + 1, server::Get_y()) == 3)
-	{
-		SetColPoint(server::Get_fx() + 1, server::Get_fy(), 0);
 	}
 	this->SetPlayerPosPic(server::Get_fdx(), server::Get_fdy());
 }

@@ -40,12 +40,13 @@ bool ProcessPacket(int index, Packet packettype) {
 			send(Connections[i], (char*)& playerdata_, sizeof(playerdata_), NULL);
 			break;
 		}
+		break;
+	}
 	default:
 		std::cout << "Unrecognized packet: " << packettype << std::endl;
 		break;
 	}
 	return true;
-	}
 }
 
 void ClientHandler(int index) {

@@ -15,9 +15,11 @@ Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& in
 	dy_ = Player.Pic_y = 140;
 	x_ = Player.Col_x = 1;
 	y_ = Player.Col_y = 11;
+	Player.Fire_y = NULL;
+	Player.Fire_x = NULL;
 	Player.gamestate = true;
-	Player.right_c = false;
-	Player.left_c = true;
+	Player.right_c = true;
+	Player.left_c = false;
 
 	if (server::ClientS())
 	{
@@ -50,9 +52,10 @@ Player1::~Player1()
 
 void Player1::PrintBC()
 {
+	server::SendingPos(P_PlayerData, Player);
+	CheckPlayerGameStat();
 	if (gamestat == true)
 	{
-		server::SendingPos(P_PlayerData, Player);
 		glm::vec3 translationA(dx_, dy_, 0);
 		if (LEFT_c == true && RIGHT_c == false)
 		{
@@ -75,7 +78,6 @@ void Player1::PrintBC()
 			}
 		}
 	}
-	CheckPlayerGameStat();
 }
 
 void Player1::MCheck(Map& map, GLFWwindow& window)
@@ -308,13 +310,19 @@ void Player1::ShootLeft(Map& map)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 1);
 		this->SetPlayerPos(x_ - 1, y_);
-		Player.Fire_x = x_ - 1;
-		Player.Fire_y = y_;
 		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
-		Player.FirePic_x = dx_ - 80;
-		Player.FirePic_y = dy_ - 17;
 		checkShoot = false;
+		Player.Fire_x = NULL;
+		Player.Fire_y = NULL;
+		Texture::Unbind();
 		OneMove = 0;
+	}
+	else if (map.GetColPoint(GetXF(), GetYF()) == 4)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 4);
+		Player.Fire_x = NULL;
+		Player.Fire_y = NULL;
+		Texture::Unbind();
 	}
 	else
 	{
@@ -352,17 +360,23 @@ void Player1::ShootRight(Map& map)
 		Shoot_count = 0;
 	}
 
-	if (map.GetColPoint(GetXF(), GetYF()) == 1 || map.GetColPoint(GetXF(), GetYF()) == 4)
+	if (map.GetColPoint(GetXF(), GetYF()) == 1)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 1);
 		this->SetPlayerPos(x_ + 1, y_);
-		Player.Fire_x = x_ + 1;
-		Player.Fire_y = y_;
+		Player.Fire_x = 0;
+		Player.Fire_y = 0;
+		Texture::Unbind();
 		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
-		Player.FirePic_x = dx_ + 80;
-		Player.FirePic_y = dy_ - 17;
 		checkShoot = false;
 		OneMove = 0;
+	}
+	else if (map.GetColPoint(GetXF(), GetYF()) == 4)
+	{
+		map.SetColPoint(GetXF(), GetYF(), 4);
+		Player.Fire_x = 0;
+		Player.Fire_y = 0;
+		Texture::Unbind();
 	}
 	else
 	{
@@ -376,25 +390,36 @@ void Player1::ShootRight(Map& map)
 
 void Player1::CheckPlayerGameStat()
 {
+	if (gamestat == false)
+	{
+		if (gamestatCounter == 50)
+		{
+			gamestat = Player.gamestate = true;
+			health = Player.health = 100;
+			this->HealthStat(health);
+			dx_ = Player.Pic_x = 120;
+			dy_ = Player.Pic_y = 140;
+			x_ = Player.Col_x = 1;
+			y_ = Player.Col_y = 11;
+			gamestatCounter = 0;
+			Player.right_c = true;
+			Player.left_c = false;
+		}
+		gamestatCounter++;
+	}
 	if (server::Get_fx() == x_ && server::Get_fy() == y_)
 	{
 		if (health > 0)
 		{
-			health = Player.health = health - this->Hit();
+			health  = Player.health = health - this->Hit();
+			this->HealthStat(health);
 		}
-		else if (health == 0)
+		else if (health <= 0)
 		{
 			gamestat = Player.gamestate = false;
-			gamestatCounter = 0;
+			Texture::Unbind();
+			x_ = Player.Col_x = NULL;
+			y_ = Player.Col_y = NULL;
 		}
-	}
-	if (gamestat == false)
-	{
-		if (gamestatCounter == 5)
-		{
-			gamestat = Player.gamestate = true;
-		}
-		Sleep(1000);
-		gamestatCounter++;
 	}
 }
