@@ -22,9 +22,11 @@
 
 <a name="diagramActivity">
 
-## 1.2 Диаграмма последовательности
+## 1.2 Диаграмма активности
 
 ![активность](/Image/diagramactivity.png)
+
+![активность](/Image/Diagramactivity2.png)
 
 <a name="diagram3">
 
