@@ -3,7 +3,7 @@
 
 Map::Map()
 {
-	ColisionMap();
+	//ColisionMap();
 	VertexBuffer vb1(positionsRL, 4 * 4 * sizeof(float));
 	VertexBuffer vb2(positionsM1, 4 * 4 * sizeof(float));
 	VertexBuffer vb3(positionsM2, 4 * 4 * sizeof(float));
@@ -84,14 +84,14 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 	glm::vec3 translation2(240, 260, 0);
 	glm::vec3 translation3(240, 620, 0);
 	glm::vec3 translation4(480, 420, 0);
-	glm::vec3 translation5(840, 620, 0);
+	glm::vec3 translation5(904, 620, 0);
 	glm::vec3 translation6(1560, 860, 0);
 	glm::vec3 translation7(1560, 260, 0);
 	glm::vec3 translation8(1680, 500, 0);
 	glm::vec3 translation9(1080, 380, 0);
 	glm::vec3 translation10(0, 740, 0);
 	glm::vec3 translation11(360, 860, 0);
-	glm::vec3 translation12(840, 460, 0);
+	glm::vec3 translation12(860, 440, 0);
 	glm::vec3 translation14(960, 140, 0);
 
 	Texture::Bind(texture_1);
@@ -224,7 +224,7 @@ void Map::PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& i
 	}
 }
 
-void Map::ColisionMap()
+/*void Map::ColisionMap()
 {
 	system("cls");
 	for (int i = 0; i < 13; i++)
@@ -235,7 +235,7 @@ void Map::ColisionMap()
 		}
 		std::cout << std::endl;
 	}
-}
+}*/
 
 void Map::SetColPoint(int x, int y, int point)
 {

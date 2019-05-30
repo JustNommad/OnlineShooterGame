@@ -21,11 +21,8 @@ Player1::Player1(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& in
 	Player.right_c = true;
 	Player.left_c = false;
 
-	if (server::ClientS())
-	{
-		system("pause");
-	}
-
+	server::ClientS();
+	
 	trans = glm::mat4(1.0f);
 	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	result = trans * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -146,7 +143,7 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 				}
 			}
 		}*/
-		if (glfwGetKey(&window, GLFW_KEY_LEFT))
+		if (glfwGetKey(&window, GLFW_KEY_A))
 		{
 			LEFT_c = Player.left_c = true;
 			RIGHT_c = Player.right_c = false;
@@ -174,7 +171,7 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 				checkPush = 2;
 			}
 		}
-		if (glfwGetKey(&window, GLFW_KEY_RIGHT))
+		if (glfwGetKey(&window, GLFW_KEY_D))
 		{
 			RIGHT_c = Player.right_c = true;
 			LEFT_c = Player.left_c = false;
@@ -202,7 +199,7 @@ void Player1::MCheck(Map& map, GLFWwindow& window)
 				checkPush = 2;
 			}
 		}
-		if (glfwGetKey(&window, GLFW_KEY_UP) && checkPush == 0)
+		if (glfwGetKey(&window, GLFW_KEY_W) && checkPush == 0)
 		{
 			checkPush = 1;
 			int check = map.GetColPoint(x_, y_ - 1);
@@ -309,8 +306,6 @@ void Player1::ShootLeft(Map& map)
 	if (map.GetColPoint(GetXF(), GetYF()) == 1)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 1);
-		this->SetPlayerPos(x_ - 1, y_);
-		this->SetPlayerPosPic(dx_ - 80, dy_ - 17);
 		checkShoot = false;
 		Player.Fire_x = NULL;
 		Player.Fire_y = NULL;
@@ -320,9 +315,15 @@ void Player1::ShootLeft(Map& map)
 	else if (map.GetColPoint(GetXF(), GetYF()) == 4)
 	{
 		map.SetColPoint(GetXF(), GetYF(), 4);
+		checkShoot = false;
 		Player.Fire_x = NULL;
 		Player.Fire_y = NULL;
+		Player.FirePic_x = NULL;
+		Player.FirePic_y = NULL;
+		this->SetPlayerPos(0, 0);
+		this->SetPlayerPosPic(0, 0);
 		Texture::Unbind();
+		OneMove = 0;
 	}
 	else
 	{
@@ -376,6 +377,10 @@ void Player1::ShootRight(Map& map)
 		map.SetColPoint(GetXF(), GetYF(), 4);
 		Player.Fire_x = 0;
 		Player.Fire_y = 0;
+		this->SetPlayerPos(x_ + 1, y_);
+		this->SetPlayerPosPic(dx_ + 80, dy_ - 17);
+		Player.FirePic_x = NULL;
+		Player.FirePic_y = NULL;
 		Texture::Unbind();
 	}
 	else

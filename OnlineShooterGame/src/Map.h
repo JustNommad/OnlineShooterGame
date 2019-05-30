@@ -78,7 +78,7 @@ public:
 	~Map();
 
 	void PrintMP(Shader& shader, glm::mat4 proj, glm::mat4 view, IndexBuffer& index, Renderer& renderer);
-	void ColisionMap();
+	//void ColisionMap();
 	void SetColPoint(int x, int y, int point);
 	int GetColPoint(int x, int y);
 	void EnemyCheck();

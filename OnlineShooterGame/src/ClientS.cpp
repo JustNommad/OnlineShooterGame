@@ -90,8 +90,7 @@
 
 			Packet Packettype = packettype;
 			send(Connection, (char*)& Packettype, sizeof(Packet), NULL);
-			//send(Connection, (char*)& msg_size, sizeof(int), NULL);
-			send(Connection, (char*)&pd_, sizeof(pd_), NULL);
+				send(Connection, (char*)&pd_, sizeof(pd_), NULL);
 		}
 
 		int Get_x() { return X_; }

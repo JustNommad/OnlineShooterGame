@@ -1,5 +1,5 @@
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
 #include <iostream>
 #include "Background.h"
 #include "Player1.h"
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
 			background.PrintBC(shader, proj, view, ib, renderer);
 			map.PrintMP(shader, proj, view, ib, renderer);
-			map.ColisionMap();
+			//map.ColisionMap();
 			player1.PrintHUD(shader, proj, view, ib, renderer);
 			player1.MCheck(map, *window);
 			player1.PrintBC();
