@@ -20,10 +20,6 @@
 
 ![последовательность1](/Image/diagram1BC.png)
 
-Подготовка к загрузке текстур.
-
-![последовательность2](/Image/diagramTextureParameters.png)
-
 <a name="diagramActivity">
 
 ## 1.2 Диаграмма активности
